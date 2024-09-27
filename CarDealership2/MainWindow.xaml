@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <TabControl>
+            <TabItem Header="Машины">
+                <StackPanel>
+                    <DataGrid Name="dataGridCar"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Модификации">
+                <DataGrid Name="dataGridMod"/>
+            </TabItem>
 
+        </TabControl>
     </Grid>
 </Window>
