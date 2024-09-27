@@ -10,6 +10,7 @@
         <TabControl>
             <TabItem Header="Машины">
                 <StackPanel>
+                    <Button Content="Сохранить" Width="100" Click="Button_Save_Click"/>
                     <DataGrid Name="dataGridCar"/>
                 </StackPanel>
             </TabItem>

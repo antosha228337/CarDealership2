@@ -25,6 +25,8 @@ namespace CarDealership2
         private NpgsqlDataAdapter carAdapter;
         private NpgsqlDataAdapter modificationAdapter;
 
+        private NpgsqlCommandBuilder carBuilder;
+
         private DataSet dataSet = new DataSet(); 
 
         public MainWindow()
@@ -37,6 +39,8 @@ namespace CarDealership2
 
             carAdapter.Fill(dataSet, "car");
             modificationAdapter.Fill(dataSet, "modification");
+
+            carBuilder = new(carAdapter);
 
             dataGridCar.ItemsSource = dataSet.Tables["car"]?.DefaultView;
 
@@ -104,6 +108,11 @@ namespace CarDealership2
 
                 dataGridSales.ItemsSource = dataTable.DefaultView;
             }
+        }
+
+        private void Button_Save_Click(object sender, RoutedEventArgs e)
+        {
+            carAdapter.Update(dataSet, "car");
         }
     }
 }
