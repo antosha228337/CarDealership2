@@ -41,6 +41,47 @@ namespace CarDealership2
             dataGridCar.ItemsSource = dataSet.Tables["car"]?.DefaultView;
 
             dataGridMod.ItemsSource = dataSet.Tables["modification"]?.DefaultView;
+
+            SetupComboBox();
+        }
+
+        private void SetupComboBox()
+        {
+            using (var sqlConnection = new NpgsqlConnection(connectionString))
+            {
+                NpgsqlDataAdapter sqlAdapter = new NpgsqlDataAdapter("SELECT * FROM car_brand", sqlConnection);
+
+                DataSet dataSet = new DataSet();
+                sqlAdapter.Fill(dataSet, "car_brand");
+
+                comboBoxCarBrand.ItemsSource = dataSet.Tables["car_brand"]?.DefaultView;
+                comboBoxCarBrand.DisplayMemberPath = "name";
+
+            }
+        }
+
+        private void Button_FindModels_Click(object sender, RoutedEventArgs e)
+        {
+            using (NpgsqlConnection sqlConnection = new NpgsqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+                NpgsqlCommand sqlCommand =
+                    new NpgsqlCommand("SELECT c.model, c.body_type FROM car c join car_brand cb on cb.Id = c.car_brand_id WHERE cb.Id = " + comboBoxCarBrand.SelectedIndex + 1
+                                  , sqlConnection);
+                NpgsqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                DataTable dataTable = new DataTable("report1");
+                dataTable.Columns.Add("model");
+                dataTable.Columns.Add("body_type");
+                while (sqlDataReader.Read())
+                {
+                    DataRow row = dataTable.NewRow();
+                    row["model"] = sqlDataReader["model"];
+                    row["body_type"] = sqlDataReader["body_type"];
+                    dataTable.Rows.Add(row);
+                }
+                sqlDataReader.Close();
+                dataGridCarByBrand.ItemsSource = dataTable.DefaultView;
+            }
         }
     }
 }

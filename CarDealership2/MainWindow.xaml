@@ -17,6 +17,17 @@
                 <DataGrid Name="dataGridMod"/>
             </TabItem>
 
+            <TabItem Header="Модели">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="comboBoxCarBrand" Width="100"/>
+                        <Button Margin="4 0 0 0" Content="Найти все модели по марке" Click="Button_FindModels_Click" Width="200"/>
+                    </StackPanel>
+                    <DataGrid x:Name="dataGridCarByBrand"/>
+                </StackPanel>
+
+            </TabItem>
+            
         </TabControl>
     </Grid>
 </Window>
