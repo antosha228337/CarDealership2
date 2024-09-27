@@ -25,6 +25,8 @@ namespace CarDealership2
         private NpgsqlDataAdapter carAdapter;
         private NpgsqlDataAdapter modificationAdapter;
 
+        private NpgsqlCommandBuilder carBuilder;
+
         private DataSet dataSet = new DataSet(); 
 
         public MainWindow()
@@ -37,6 +39,8 @@ namespace CarDealership2
 
             carAdapter.Fill(dataSet, "car");
             modificationAdapter.Fill(dataSet, "modification");
+
+            carBuilder = new(carAdapter);
 
             dataGridCar.ItemsSource = dataSet.Tables["car"]?.DefaultView;
 
@@ -66,7 +70,7 @@ namespace CarDealership2
             {
                 sqlConnection.Open();
                 NpgsqlCommand sqlCommand =
-                    new NpgsqlCommand("SELECT c.model, c.body_type FROM car c join car_brand cb on cb.Id = c.car_brand_id WHERE cb.Id = " + comboBoxCarBrand.SelectedIndex + 1
+                    new NpgsqlCommand("SELECT c.model, c.body_type FROM car c join car_brand cb on cb.id = c.car_brand_id WHERE cb.id = " + (comboBoxCarBrand.SelectedIndex + 1)
                                   , sqlConnection);
                 NpgsqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                 DataTable dataTable = new DataTable("report1");
@@ -104,6 +108,11 @@ namespace CarDealership2
 
                 dataGridSales.ItemsSource = dataTable.DefaultView;
             }
+        }
+
+        private void Button_Save_Click(object sender, RoutedEventArgs e)
+        {
+            carAdapter.Update(dataSet, "car");
         }
     }
 }
