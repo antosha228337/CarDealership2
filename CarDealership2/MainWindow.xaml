@@ -27,7 +27,17 @@
                 </StackPanel>
 
             </TabItem>
-            
+
+            <TabItem Header="Продажи">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="textBoxCarBrand" Width="100" MaxLength="100"/>
+                        <Button Margin="2 0 0 0" Content="Найти все продажи данной марки" Click="Button_FindSales_Click"/>
+                    </StackPanel>
+                    <DataGrid x:Name="dataGridSales"/>
+                </StackPanel>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

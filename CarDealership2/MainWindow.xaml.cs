@@ -83,5 +83,27 @@ namespace CarDealership2
                 dataGridCarByBrand.ItemsSource = dataTable.DefaultView;
             }
         }
+
+        private void Button_FindSales_Click(object sender, RoutedEventArgs e)
+        {
+            using (NpgsqlConnection sqlConnection = new NpgsqlConnection(connectionString))
+            {
+                //Trace.WriteLine(comboBoxCarBrand.SelectedItem.ToString());
+                NpgsqlCommand sqlCommand = new NpgsqlCommand("SELECT * FROM get_sales_by_brand($1);", sqlConnection)
+                {
+                    Parameters =
+                    {
+                        new NpgsqlParameter(){Value = textBoxCarBrand.Text },
+                    }
+                };
+                sqlConnection.Open();
+                sqlCommand.Prepare();
+                DataTable dataTable = new DataTable("report2");
+                var sqlAdapter = new NpgsqlDataAdapter(sqlCommand);
+                sqlAdapter.Fill(dataTable);
+
+                dataGridSales.ItemsSource = dataTable.DefaultView;
+            }
+        }
     }
 }
